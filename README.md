@@ -5,8 +5,8 @@
 ### Description
 
 In this assignment you will implment an agent to play the game of Connect 4.
-Your agent will use the <span style='color:red'>alpha-beta pruning algorithm</span>
-and the <span style='color:green'>expectimax</span> to select the
+Your agent will use the **alpha-beta pruning algorithm**
+and the **expectimax algorithm** to select the
 next move given the current board state.
 
 There are two main files:
@@ -81,8 +81,8 @@ Shown below is an example where I managed to get the best of a Random player:
 You will to turn in 2 files:
 
 - Player.py
-  - This should include your <span style='color:red'>alpha-beta pruning algorithm</span>
-  and <span style='color:green'>expectimax</span> implemenations int the AIPlayer
+  - This should include your **alpha-beta pruning algorithm**
+  and **expectimax** implemenations int the AIPlayer
   class
 
 - Assignment3.pdf
