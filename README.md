@@ -34,7 +34,9 @@ and
 
 These functions serve as a high level abstraction for interacting with a player.
 You will likely need to implement other functions in the class to make your code
-modular and readable.
+modular and readable. **Note that it will likely be too expensive to explore the
+entire game tree at the beginning of the game so a depth-limited search is a
+good place to start**.
 
 To play the game run the following command:
 
