@@ -30,7 +30,7 @@ and
 
 and
 
-`def heuristic_value(self, board)`
+`def evaluation_value(self, board)`
 
 These functions serve as a high level abstraction for interacting with a player.
 You will likely need to implement other functions in the class to make your code

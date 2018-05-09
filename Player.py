@@ -28,7 +28,6 @@ class AIPlayer:
         """
         raise NotImplementedError('Whoops I don\'t know what to do')
 
-
     def get_expectimax_move(self, board):
         """
         Given the current state of the board, return the next move based on
@@ -52,11 +51,14 @@ class AIPlayer:
         """
         raise NotImplementedError('Whoops I don\'t know what to do')
 
-    def heuristic_value(self, board):
+
+
+
+    def evaluation_function(self, board):
         """
-        Given the current state of the board, return its heuristic value
-
-
+        Given the current stat of the board, return the scalar value that 
+        represents the evaluation function for the current player
+       
         INPUTS:
         board - a numpy array containing the state of the board using the
                 following encoding:
@@ -68,9 +70,10 @@ class AIPlayer:
                 - spaces that are occupied by player 2 have a 2 in them
 
         RETURNS:
-        The scalar heuristic value of the current state of the board
+        The utility value for the current board
         """
-
+       
+       
         return 0
 
 
@@ -142,3 +145,4 @@ class HumanPlayer:
             move = int(input('Enter your move: '))
 
         return move
+
