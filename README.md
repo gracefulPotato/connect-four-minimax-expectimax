@@ -52,7 +52,7 @@ For example if you wanted to play against a random player you would run:
 
 If you wanted your ai to play itself you would run:
 
-`python ConnectFour.py arg1 arg2`
+`python ConnectFour.py ai ai`
 
 `ConnectFour.py` takes one optional argument `--time` that is an integer. It is
 the value used to limit the amount of time in seconds to wait for the AI player
