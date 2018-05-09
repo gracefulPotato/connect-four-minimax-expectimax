@@ -6,15 +6,18 @@ class AIPlayer:
         self.type = 'ai'
         self.player_string = 'Player {}:ai'.format(player_number)
 
-    def get_move(self, board):
+    def get_alpha_beta_move(self, board):
         """
-        Given the current state of the board, return the next move.
+        Given the current state of the board, return the next move based on
+        the alpha-beta pruning algorithm
+
+        This will play against either itself or a human player
 
         INPUTS:
         board - a numpy array containing the state of the board using the
                 following encoding:
                 - the board maintains its same two dimensions
-                    - row 0 is the top of the board and so is 
+                    - row 0 is the top of the board and so is
                       the last row filled
                 - spaces that are unoccupied are marked as 0
                 - spaces that are occupied by player 1 have a 1 in them
@@ -24,6 +27,51 @@ class AIPlayer:
         The 0 based index of the column that represents the next move
         """
         raise NotImplementedError('Whoops I don\'t know what to do')
+
+
+    def get_expectimax_move(self, board):
+        """
+        Given the current state of the board, return the next move based on
+        the expectimax algorithm.
+
+        This will play against the random player, who chooses any valid move
+        with equal probability
+
+        INPUTS:
+        board - a numpy array containing the state of the board using the
+                following encoding:
+                - the board maintains its same two dimensions
+                    - row 0 is the top of the board and so is
+                      the last row filled
+                - spaces that are unoccupied are marked as 0
+                - spaces that are occupied by player 1 have a 1 in them
+                - spaces that are occupied by player 2 have a 2 in them
+
+        RETURNS:
+        The 0 based index of the column that represents the next move
+        """
+        raise NotImplementedError('Whoops I don\'t know what to do')
+
+    def heuristic_value(self, board):
+        """
+        Given the current state of the board, return its heuristic value
+
+
+        INPUTS:
+        board - a numpy array containing the state of the board using the
+                following encoding:
+                - the board maintains its same two dimensions
+                    - row 0 is the top of the board and so is
+                      the last row filled
+                - spaces that are unoccupied are marked as 0
+                - spaces that are occupied by player 1 have a 1 in them
+                - spaces that are occupied by player 2 have a 2 in them
+
+        RETURNS:
+        The scalar heuristic value of the current state of the board
+        """
+
+        return 0
 
 
 class RandomPlayer:
@@ -41,7 +89,7 @@ class RandomPlayer:
         board - a numpy array containing the state of the board using the
                 following encoding:
                 - the board maintains its same two dimensions
-                    - row 0 is the top of the board and so is 
+                    - row 0 is the top of the board and so is
                       the last row filled
                 - spaces that are unoccupied are marked as 0
                 - spaces that are occupied by player 1 have a 1 in them
@@ -54,7 +102,7 @@ class RandomPlayer:
         for col in range(board.shape[1]):
             if 0 in board[:,col]:
                 valid_cols.append(col)
-        
+
         return np.random.choice(valid_cols)
 
 
@@ -72,7 +120,7 @@ class HumanPlayer:
         board - a numpy array containing the state of the board using the
                 following encoding:
                 - the board maintains its same two dimensions
-                    - row 0 is the top of the board and so is 
+                    - row 0 is the top of the board and so is
                       the last row filled
                 - spaces that are unoccupied are marked as 0
                 - spaces that are occupied by player 1 have a 1 in them
@@ -90,7 +138,7 @@ class HumanPlayer:
         move = int(input('Enter your move: '))
 
         while move not in valid_cols:
-            print('Invalid Column, choose from:{}'.format(valid_cols))
+            print('Column full, choose from:{}'.format(valid_cols))
             move = int(input('Enter your move: '))
 
         return move

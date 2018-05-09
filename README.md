@@ -4,24 +4,37 @@
 
 ### Description
 
-In this assignment you will implment an agent to play t[he game of Connect 4.
-Your agent will use the alpha-beta pruning algorithm to select the next move
-given the current board state. 
+In this assignment you will implment an agent to play the game of Connect 4.
+Your agent will use the <span style='color:red'>alpha-beta pruning algorithm</span>
+and the <span style='color:green'>expectimax</span> to select the
+next move given the current board state.
 
 There are two main files:
-- ConnectFour.py 
+- ConnectFour.py
 - Player.py
 
 ConnectFour.py contains the all of the functions of the game.
-Player.py contains all of the types of players that can participate in the 
+Player.py contains all of the types of players that can participate in the
 game:
 - AIPlayer (Your Implementation)
-- RandomPlayer (Makes Random Moves)
+- RandomPlayer (Chooses from valid columns with equal probability)
 - HumanPlayer (You)
 
-You need to implement the `get_move()` function in the AIPlayer class. 
-You are welcome to implement anyother functions that you think are useful. 
-You can't however make any changes to ConnectFour.py
+You need to implement **all** of the following:
+
+`def get_alpha_beta_move(self, board)`
+
+and
+
+`def get_expectimax_move(self, board)`
+
+and
+
+`def heuristic_value(self, board)`
+
+These functions serve as a high level abstraction for interacting with a player.
+You will likely need to implement other functions in the class to make your code
+modular and readable.
 
 To play the game run the following command:
 
@@ -40,23 +53,45 @@ If you wanted your ai to play itself you would run:
 `python ConnectFour.py arg1 arg2`
 
 `ConnectFour.py` takes one optional argument `--time` that is an integer. It is
-the value used to limit the amount of time in minutes to wait for the AI player
-to make a move. The default value is 5 minutes. 
+the value used to limit the amount of time in seconds to wait for the AI player
+to make a move. The default value is 5 seconds.
+
+Here is the award winning GUI that comes included:
+
+![game](game.png)
+
+The top text displays the player who's move it is.
+
+The well drawn circles in the middle are the places places on the gameboard
+
+The next move button does exactly what your expect, it moves the game forward
+by one move.
+
+When the game is over the top text will change to the name of the winning player
+and 'wins!'
+
+Shown below is an example where I managed to get the best of a Random player:
+
+![game-over](game-over.png)
 
 ### Deliverables
 
 You will to turn in 2 files:
 
 - Player.py
-  - This should include your alpha-beta implementation in the AIPlayer class
+  - This should include your <span style='color:red'>alpha-beta pruning algorithm</span>
+  and <span style='color:green'>expectimax</span> implemenations int the AIPlayer
+  class
 
 - Assignment3.pdf
   - Address the following questions:
     - What heuristic did you use? Why?
-    - Describe how your algorithm performs given different time contraints. How much of the tree can you explore given 5 seconds per turn? 10 seconds? 3 seconds? 
+    - Describe how your algorithm performs given different time contraints.
+    How much of the tree can you explore given 5 seconds per turn? 10 seconds?
+    3 seconds?
     - Can you beat your algorithm?
-    - If your algorithm plays itself, does the player that goes first do better or worse in general?
+    - If your algorithm plays itself, does the player that goes first do better
+    or worse in general? Share some of the results.
 
-    
 
 

@@ -10,13 +10,14 @@ import numpy as np
 from Player import AIPlayer, RandomPlayer, HumanPlayer
 
 class Game:
-    def __init__(self, player1, player2):
+    def __init__(self, player1, player2, time):
         self.players = [player1, player2]
         self.colors = ['yellow', 'red']
         self.current_turn = 0
         self.board = np.zeros([6,7]).astype(np.uint8)
         self.gui_board = []
         self.game_over = False
+        self.ai_turn_limit = time
 
         #https://stackoverflow.com/a/38159672
         root = tk.Tk()
@@ -31,7 +32,7 @@ class Game:
             for col in range(0, 700, 100):
                 column.append(self.c.create_oval(row, col, row+100, col+100, fill=''))
             self.gui_board.append(column)
-        
+
         tk.Button(root, text='Next Move', command=self.make_move).pack()
 
         root.mainloop()
@@ -42,14 +43,19 @@ class Game:
 
             #https://stackoverflow.com/a/37737985
             def turn_worker(board, send_end):
-                send_end.send(current_player.get_move(board))
+                if self.players[int(not self.current_turn)].type == 'human':
+                    p_func = current_player.get_alpha_beta_move
+                else:
+                    p_func = current_player.get_expectimax_move
+
+                send_end.send(p_func(board))
 
             if current_player.type == 'ai':
                 try:
                     recv_end, send_end = mp.Pipe(False)
                     p = mp.Process(target=turn_worker, args=(self.board, send_end))
                     p.start()
-                    p.join(5*60)
+                    p.join(self.ai_turn_limit)
                 except Exception as e:
                     uh_oh = 'Uh oh.... something is wrong with Player {}'
                     print(uh_oh.format(current_player.player_number))
@@ -68,8 +74,10 @@ class Game:
                 self.game_over = True
                 self.player_string.configure(text=self.players[self.current_turn].player_string + ' wins!')
             else:
-                self.current_turn = (self.current_turn + 1) % 2
+                self.current_turn = int(not self.current_turn)
                 self.player_string.configure(text=self.players[self.current_turn].player_string)
+                if self.players[self.current_turn].type == 'human':
+                    self.make_move()
 
     def update_board(self, move, player_num):
         if 0 in self.board[:,move]:
@@ -90,42 +98,42 @@ class Game:
             err = 'Invalid move by player {}. Column {}'.format(player_num, move)
             raise Exception(err)
 
-        
+
     def game_completed(self, player_num):
         player_win_str = '{}{}{}{}'.format(player_num, player_num, player_num, player_num)
         board = self.board
         to_str = lambda a: ''.join(a.astype(str))
-        
+
         def check_horizontal(b):
             for row in b:
-                if player_win_str in to_str(row): 
+                if player_win_str in to_str(row):
                     return True
             return False
-        
+
         def check_verticle(b):
             return check_horizontal(b.T)
-        
+
         def check_diagonal(b):
             for op in [None, np.fliplr]:
                 op_board = op(b) if op else b
-                
+
                 if player_win_str in to_str(np.diagonal(op_board, offset=0)):
                     return True
-                
+
                 for i in range(1, b.shape[1]-3):
                     if player_win_str in to_str(np.diagonal(op_board, offset=i)):
                         return True
             return False
-        
-        return (check_horizontal(board) or 
+
+        return (check_horizontal(board) or
                 check_verticle(board) or
                 check_diagonal(board))
 
 
 
-def main(player1, player2):
+def main(player1, player2, time):
     """
-    Creates player objects based on the string paramters that are passed 
+    Creates player objects based on the string paramters that are passed
     to it and calls play_game()
 
     INPUTS:
@@ -140,7 +148,7 @@ def main(player1, player2):
         elif name=='human':
             return HumanPlayer(num)
 
-    Game(make_player(player1, 1), make_player(player2, 2))
+    Game(make_player(player1, 1), make_player(player2, 2), time)
 
 
 def play_game(player1, player2):
@@ -163,6 +171,10 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('player1', choices=player_types)
     parser.add_argument('player2', choices=player_types)
+    parser.add_argument('--time',
+                        type=int,
+                        default=60,
+                        help='Time to wait for a move in seconds (int)')
     args = parser.parse_args()
 
-    main(args.player1, args.player2)
+    main(args.player1, args.player2, args.time)
