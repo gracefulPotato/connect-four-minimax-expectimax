@@ -1,6 +1,6 @@
 # Assignment 3
 
-**Due 3/18/2018 at 11:59pm**
+**Due 5/20/2018 at 11:59pm**
 
 ### Description
 
